@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RapidCare — Patient Registration</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-icon">✚</span>
+        <span>RapidCare</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="text-sm">Sign In</a></li>
+          <li><a href="register-clinic.html" class="btn btn-secondary btn-sm">Clinic Portal</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Registration Form with Ambient Glow Lighting -->
+  <main class="ambient-glow-wrapper" style="flex: 1; padding: 12px 0 48px;">
+    <!-- Ambient Light Blobs -->
+    <div class="ambient-blob ambient-blob-teal" style="top: 20px; right: 10%; width: 480px; height: 480px;"></div>
+    <div class="ambient-blob ambient-blob-coral" style="bottom: 40px; left: 8%; width: 440px; height: 440px; opacity: 0.18;"></div>
+
+    <div class="container-narrow">
+      <div class="card animate-in">
+        <div style="text-align: center; margin-bottom: 24px;">
+        <span class="badge badge-approved" style="margin-bottom: 12px;"><span class="status-dot"></span> Instant Patient Access</span>
+        <h2>Create Patient Account</h2>
+        <p class="text-muted text-sm">Join RapidCare to book digital clinic visits and access emergency coordination services.</p>
+      </div>
+
+      <div id="register-error" class="alert alert-danger" style="display: none;"></div>
+      <div id="register-success" class="alert alert-success" style="display: none;"></div>
+
+      <form id="patient-register-form">
+        <div class="form-group">
+          <label class="form-label" for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" class="form-input" placeholder="e.g. Maya Sharma" required autocomplete="name">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" class="form-input" placeholder="maya@example.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-phone">Phone Number</label>
+          <input type="tel" id="reg-phone" class="form-input" placeholder="+91 98765 43210" required autocomplete="tel">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-blood-group">Blood Group (Optional)</label>
+          <select id="reg-blood-group" class="form-select">
+            <option value="">Select your blood group (helps emergency matching)</option>
+            <option value="O-">O Negative (O-)</option>
+            <option value="O+">O Positive (O+)</option>
+            <option value="A-">A Negative (A-)</option>
+            <option value="A+">A Positive (A+)</option>
+            <option value="B-">B Negative (B-)</option>
+            <option value="B+">B Positive (B+)</option>
+            <option value="AB-">AB Negative (AB-)</option>
+            <option value="AB+">AB Positive (AB+)</option>
+          </select>
+          <div class="form-hint">Used for matching compatible donors or registering availability.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Create Password</label>
+          <input type="password" id="reg-password" class="form-input" placeholder="At least 6 characters" minlength="6" required autocomplete="new-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Complete Registration</button>
+      </form>
+
+      <div class="text-muted text-sm" style="margin-top: 24px; text-align: center;">
+        Already have an account? <a href="index.html" style="font-weight: 600;">Sign in here</a>.
+      </div>
+    </div>
+  </div>
+</main>
+
+  <footer class="footer">
+    <div class="container">
+      <p style="margin: 0;">&copy; 2026 RapidCare. Privacy-first community healthcare coordination.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

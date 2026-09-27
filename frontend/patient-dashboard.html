@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RapidCare — Patient Dashboard</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="top">
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-icon">✚</span>
+        <span>RapidCare</span>
+      </a>
+      <div class="dashboard-nav-user">
+        <div class="user-pill">
+          <span style="color: var(--color-success);">●</span>
+          <span id="user-display-name">Patient</span>
+          <span class="badge badge-requested text-sm" id="user-role-badge">patient</span>
+        </div>
+        <button id="logout-btn" class="btn btn-secondary btn-sm">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Patient Dashboard with Ambient Glow Lighting -->
+  <main class="ambient-glow-wrapper" style="flex: 1;">
+    <!-- Ambient Light Blobs -->
+    <div class="ambient-blob ambient-blob-teal" style="top: 20px; right: 2%; width: 520px; height: 520px;"></div>
+    <div class="ambient-blob ambient-blob-coral" style="top: 420px; left: -40px; width: 460px; height: 460px; opacity: 0.16;"></div>
+
+    <div class="container" style="padding-top: 24px; padding-bottom: 64px;">
+      
+      <div class="dashboard-header">
+        <div>
+          <span class="hero-tag">Patient Care Portal</span>
+          <h1 style="font-size: 2.2rem; margin-bottom: 4px;" id="welcome-heading">Welcome</h1>
+          <p class="text-muted text-sm">Coordinate your appointments, request urgent ambulance dispatch, and find compatible blood donors.</p>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+          <a href="#emergency-section" class="btn btn-accent btn-sm">🚨 Immediate SOS</a>
+          <a href="#appointments-section" class="btn btn-primary btn-sm">📅 Book Visit</a>
+        </div>
+      </div>
+
+      <!-- Quick Jump Navigation Bar (Every Section in Patient Portal) -->
+      <div class="quick-jump-wrapper animate-in">
+        <nav class="quick-jump-bar" aria-label="Patient Portal Quick Section Navigation">
+          <span class="quick-jump-label">⚡ Quick Jump:</span>
+          <a href="#emergency-section" class="quick-jump-link highlight">🚨 SOS Emergency</a>
+          <a href="#fleet-section" class="quick-jump-link">🚑 Live Fleet</a>
+          <a href="#appointments-section" class="quick-jump-link">📅 Appointments</a>
+          <a href="#history-section" class="quick-jump-link">📋 Visit History</a>
+          <a href="#blood-section" class="quick-jump-link">🩸 Blood Matches</a>
+          <a href="#blood-banks-directory" class="quick-jump-link">🏥 Regional Blood Banks</a>
+          <a href="#facilities-section" class="quick-jump-link">🏨 Facilities</a>
+        </nav>
+      </div>
+
+      <!-- 24-Hour Follow-up Reminder Banner (Feature 6) -->
+      <div id="appointment-reminder-banner" class="alert alert-warning animate-in" style="display: none; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 1.35rem;">🔔</span>
+          <span id="appointment-reminder-text"></span>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="dismissAppointmentReminder()" style="padding: 4px 10px; font-size: 0.8rem; white-space: nowrap;">Dismiss ✕</button>
+      </div>
+
+      <!-- Alert / Notification Banner -->
+      <div id="dashboard-alert" class="alert alert-info" style="display: none;"></div>
+
+      <!-- ======================================================================
+           SECTION 1: EMERGENCY AMBULANCE SOS
+           ====================================================================== -->
+      <section id="emergency-section" class="dashboard-section">
+        <div class="card sos-box">
+          <div style="width: 100%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span class="badge badge-urgent">● Immediate Medical Emergency</span>
+              <a href="#top" class="back-to-top-btn">↑ Back to Top</a>
+            </div>
+            <h2>Ambulance SOS Dispatch</h2>
+            <p class="text-muted" style="max-width: 580px; margin: 0 auto;">
+              Press the emergency button below to request an ambulance. Coordinates are captured automatically to guide the driver to your location.
+            </p>
+          </div>
+
+          <!-- Pulse Button -->
+          <button id="sos-btn" class="btn btn-sos">
+            <span style="font-size: 1.5rem;">🚨</span>
+            <span>REQUEST EMERGENCY AMBULANCE</span>
+          </button>
+
+          <!-- Location Details & Fallback inside Recessed Card -->
+          <div class="card-inset" style="max-width: 480px; width: 100%; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <label class="form-label" style="margin: 0;" for="manual-location">Pickup Location</label>
+              <span id="geo-status" class="text-sm text-muted">📍 Detecting GPS...</span>
+            </div>
+            <input type="text" id="manual-location" class="form-input" placeholder="e.g. Near Swargate Bus Station, Pune" value="Pune, Maharashtra">
+            <div class="form-hint">Auto-detected from device, or enter landmarks manually.</div>
+          </div>
+
+          <!-- Live Ambulance Fleet Availability Display (Feature 3) -->
+          <div id="fleet-section" style="width: 100%; text-align: left; margin-top: 14px; padding-top: 18px; border-top: 1px solid rgba(232, 131, 107, 0.2);">
+            <div class="section-header">
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="status-dot"></span>
+                  <h3 style="font-size: 1.15rem; margin: 0;">Currently Available Ambulances Nearby</h3>
+                </div>
+                <p class="text-muted text-sm" style="margin-top: 4px;">Live available fleet within your response zone, sorted nearest first.</p>
+              </div>
+              <button type="button" id="refresh-nearby-ambulances-btn" class="btn btn-secondary btn-sm" onclick="loadNearbyAmbulances()">↻ Refresh Fleet</button>
+            </div>
+            <div id="nearby-ambulances-list" class="donor-grid" style="grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-top: 12px;">
+              <div class="empty-state card-compact" style="grid-column: 1 / -1; padding: 20px;">
+                <p class="text-muted text-sm" style="margin: 0;">Loading available ambulances near you...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Ambulance Requests Tracker -->
+          <div style="width: 100%; text-align: left; margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(43, 76, 79, 0.08);">
+            <div class="section-header">
+              <h3 style="font-size: 1.15rem; margin: 0;">My Ambulance SOS Status</h3>
+              <button id="refresh-ambulance-btn" class="btn btn-secondary btn-sm">Refresh Status</button>
+            </div>
+            <div id="ambulance-list" class="data-list">
+              <div class="empty-state card-compact">
+                <p class="text-muted text-sm" style="margin: 0;">No active ambulance requests. Press SOS above if immediate dispatch is needed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    <!-- ======================================================================
+         SECTION 2: MY APPOINTMENTS & BOOKING
+         ====================================================================== -->
+    <section id="appointments-section" class="dashboard-section">
+      <div class="dashboard-two-col">
+        
+        <!-- List of Patient's Appointments inside Card -->
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <h3>My Clinic Appointments</h3>
+              <p class="text-muted text-sm" style="margin: 0;">Upcoming and past consultations with clinic staff.</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button id="refresh-appointments-btn" class="btn btn-secondary btn-sm">Refresh</button>
+              <a href="#top" class="back-to-top-btn">↑ Top</a>
+            </div>
+          </div>
+
+          <div id="appointments-list" class="data-list">
+            <div class="empty-state">
+              <div class="empty-state-icon">📅</div>
+              <p>You have no appointments booked yet.</p>
+              <p class="text-muted text-sm">Use the form on the right to schedule a visit.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Book New Appointment Form inside Card -->
+        <div class="card">
+          <h3 style="margin-bottom: 6px;">Book an Appointment</h3>
+          <p class="text-muted text-sm" style="margin-bottom: 20px;">Request a consultation slot with your registered clinic.</p>
+
+          <div id="appointment-form-alert" class="alert alert-danger" style="display: none;"></div>
+
+          <form id="appointment-form">
+            <div class="form-group">
+              <label class="form-label" for="app-reason">Reason for Visit</label>
+              <textarea id="app-reason" class="form-textarea" rows="3" placeholder="e.g. Routine blood pressure review, flu symptoms..." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="app-date">Preferred Date & Time</label>
+              <input type="datetime-local" id="app-date" class="form-input" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Confirm Appointment Request</button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 2.5: VISIT HISTORY (Completed Consultations) (Feature 2)
+         ====================================================================== -->
+    <section id="history-section" class="dashboard-section">
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge badge-confirmed">● Consultation Archive</span>
+            </div>
+            <h3 style="margin-top: 6px;">Visit History</h3>
+            <p class="text-muted text-sm" style="margin: 0;">Past completed appointments and clinic consultations, sorted most recent first.</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span id="visit-history-count-badge" class="badge badge-approved">0 Completed Visits</span>
+            <a href="#top" class="back-to-top-btn">↑ Top</a>
+          </div>
+        </div>
+
+        <div id="visit-history-list" class="data-list" style="margin-top: 16px;">
+          <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <p style="font-weight: 600; margin-bottom: 4px;">No completed visits on record yet.</p>
+            <p class="text-muted text-sm" style="margin: 0;">Once a clinic consultation is marked completed by staff, it will appear here in your visit history.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 3: EMERGENCY BLOOD DONOR COORDINATION
+         ====================================================================== -->
+    <section id="blood-section" class="dashboard-section">
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <span class="badge badge-urgent" style="margin-bottom: 12px;">● Compatibility Matching Engine</span>
+            <h2>Emergency Blood Requirement</h2>
+            <p class="text-muted text-sm" style="margin: 0;">
+              Submit blood needs to find available compatible donors sorted by proximity using the verified transfusion matrix.
+            </p>
+          </div>
+          <a href="#top" class="back-to-top-btn">↑ Top</a>
+        </div>
+
+        <!-- Request Form in Recessed Surface -->
+        <div class="card-inset" style="margin-top: 16px;">
+          <div id="blood-form-alert" class="alert alert-danger" style="display: none;"></div>
+
+          <form id="blood-request-form">
+            <div class="blood-form-grid">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" for="blood-group-select">Blood Group Needed</label>
+                <select id="blood-group-select" class="form-select" required>
+                  <option value="">Select blood type</option>
+                  <option value="O-">O Negative (O-)</option>
+                  <option value="O+">O Positive (O+)</option>
+                  <option value="A-">A Negative (A-)</option>
+                  <option value="A+">A Positive (A+)</option>
+                  <option value="B-">B Negative (B-)</option>
+                  <option value="B+">B Positive (B+)</option>
+                  <option value="AB-">AB Negative (AB-)</option>
+                  <option value="AB+">AB Positive (AB+)</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" for="blood-location">Hospital / Patient Location</label>
+                <input type="text" id="blood-location" class="form-input" placeholder="e.g. Ruby Hall Clinic, Pune" value="Ruby Hall Clinic, Pune" required>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" for="blood-urgency">Urgency Level</label>
+                <select id="blood-urgency" class="form-select">
+                  <option value="urgent">🚨 Urgent (Life threatening)</option>
+                  <option value="normal">Normal (Within 24 hours)</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+              <button type="submit" class="btn btn-accent">Find Compatible Donors</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Matches Results Container -->
+        <div id="blood-matches-wrapper" style="margin-top: 28px; display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 id="matches-heading">Compatible Donor Matches</h3>
+            <span id="matches-count-badge" class="badge badge-confirmed">0 Donors Found</span>
+          </div>
+
+          <p class="text-muted text-sm">
+            Ranked by Haversine distance proximity from your location. Contact available donors directly:
+          </p>
+
+          <div id="donor-matches-grid" class="donor-grid"></div>
+        </div>
+
+        <!-- Blood Bank Information Section (Feature 4) -->
+        <div id="blood-banks-directory" style="margin-top: 36px; padding-top: 24px; border-top: 1px solid rgba(43, 76, 79, 0.08);">
+          <div class="section-header">
+            <div>
+              <span class="hero-tag" style="margin-bottom: 6px;">Regional Directory</span>
+              <h3 style="margin: 0;">Verified Regional Blood Banks</h3>
+              <p class="text-muted text-sm" style="margin-top: 4px;">Direct contact information and stock availability for regional blood transfusion centers in Pune.</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge badge-requested">4 Centers Active</span>
+              <a href="#top" class="back-to-top-btn">↑ Top</a>
+            </div>
+          </div>
+
+          <div class="donor-grid" style="margin-top: 16px;">
+            <!-- Blood Bank 1 -->
+            <div class="donor-card">
+              <div class="donor-card-top">
+                <span class="donor-name">Red Cross Blood Bank & Transfusion Center</span>
+                <span class="badge badge-approved text-sm">24/7 Open</span>
+              </div>
+              <div class="text-muted text-sm">📍 593/2 Rasta Peth, Near Apollo Theater, Pune</div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0;">
+                <span class="badge badge-urgent text-sm">O-</span>
+                <span class="badge badge-pending text-sm">O+</span>
+                <span class="badge badge-pending text-sm">A+</span>
+                <span class="badge badge-pending text-sm">B+</span>
+                <span class="badge badge-pending text-sm">AB+</span>
+              </div>
+              <a href="tel:+912026131444" class="donor-phone-btn">
+                <span>📞</span>
+                <span>Call +91 20 2613 1444</span>
+              </a>
+            </div>
+
+            <!-- Blood Bank 2 -->
+            <div class="donor-card">
+              <div class="donor-card-top">
+                <span class="donor-name">Sahyadri Super Speciality Blood Bank</span>
+                <span class="badge badge-approved text-sm">24/7 Open</span>
+              </div>
+              <div class="text-muted text-sm">📍 Plot 30-C, Karve Road, Deccan Gymkhana, Pune</div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0;">
+                <span class="badge badge-pending text-sm">O+</span>
+                <span class="badge badge-pending text-sm">A+</span>
+                <span class="badge badge-urgent text-sm">A-</span>
+                <span class="badge badge-pending text-sm">B+</span>
+                <span class="badge badge-urgent text-sm">AB-</span>
+              </div>
+              <a href="tel:+912067213000" class="donor-phone-btn">
+                <span>📞</span>
+                <span>Call +91 20 6721 3000</span>
+              </a>
+            </div>
+
+            <!-- Blood Bank 3 -->
+            <div class="donor-card">
+              <div class="donor-card-top">
+                <span class="donor-name">Ruby Hall Clinic Central Blood Bank</span>
+                <span class="badge badge-approved text-sm">NABH Accredited</span>
+              </div>
+              <div class="text-muted text-sm">📍 40 Sassoon Road, Sangamvadi, Pune</div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0;">
+                <span class="badge badge-urgent text-sm">O-</span>
+                <span class="badge badge-pending text-sm">O+</span>
+                <span class="badge badge-pending text-sm">B+</span>
+                <span class="badge badge-urgent text-sm">B-</span>
+                <span class="badge badge-pending text-sm">AB+</span>
+              </div>
+              <a href="tel:+912066455100" class="donor-phone-btn">
+                <span>📞</span>
+                <span>Call +91 20 6645 5100</span>
+              </a>
+            </div>
+
+            <!-- Blood Bank 4 -->
+            <div class="donor-card">
+              <div class="donor-card-top">
+                <span class="donor-name">KEM Hospital Blood Center</span>
+                <span class="badge badge-approved text-sm">Govt Approved</span>
+              </div>
+              <div class="text-muted text-sm">📍 489 Rasta Peth, Sardar Moodliar Road, Pune</div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0;">
+                <span class="badge badge-pending text-sm">O+</span>
+                <span class="badge badge-pending text-sm">A+</span>
+                <span class="badge badge-pending text-sm">B+</span>
+                <span class="badge badge-pending text-sm">AB+</span>
+              </div>
+              <a href="tel:+912066037300" class="donor-phone-btn">
+                <span>📞</span>
+                <span>Call +91 20 6603 7300</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 4: NEARBY HEALTHCARE FACILITIES (Feature 5)
+         ====================================================================== -->
+    <section id="facilities-section" class="dashboard-section">
+      <div class="card">
+        <div class="section-header">
+          <div>
+            <span class="hero-tag" style="margin-bottom: 8px;">Network Directory</span>
+            <h2>Nearby Healthcare Facilities</h2>
+            <p class="text-muted text-sm" style="margin: 0;">Verified emergency clinics, general hospitals, and trauma facilities in the surrounding area.</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge badge-confirmed">4 Facilities Active</span>
+            <a href="#top" class="back-to-top-btn">↑ Top</a>
+          </div>
+        </div>
+
+        <div class="donor-grid" style="margin-top: 20px;">
+          <!-- Facility 1 -->
+          <div class="donor-card">
+            <div class="donor-card-top">
+              <span class="donor-name">Sancheti Orthopedic & Trauma Hospital</span>
+              <span class="donor-distance">📍 1.6 km</span>
+            </div>
+            <div class="text-muted text-sm">16, Shivajinagar, Pune, Maharashtra 411005</div>
+            <div class="data-item-meta" style="margin-top: 6px;">
+              <span>🕒 24/7 Emergency & Trauma</span>
+              <span class="badge badge-approved text-sm">ICU Ready</span>
+            </div>
+            <a href="tel:+912028999999" class="donor-phone-btn">
+              <span>📞</span>
+              <span>Call +91 20 2899 9999</span>
+            </a>
+          </div>
+
+          <!-- Facility 2 -->
+          <div class="donor-card">
+            <div class="donor-card-top">
+              <span class="donor-name">Deenanath Mangeshkar Hospital</span>
+              <span class="donor-distance">📍 3.2 km</span>
+            </div>
+            <div class="text-muted text-sm">Erandwane, Near Mhatre Bridge, Pune 411004</div>
+            <div class="data-item-meta" style="margin-top: 6px;">
+              <span>🕒 Multi-Specialty & Cardiac Care</span>
+              <span class="badge badge-approved text-sm">Level-1 Trauma</span>
+            </div>
+            <a href="tel:+912040151000" class="donor-phone-btn">
+              <span>📞</span>
+              <span>Call +91 20 4015 1000</span>
+            </a>
+          </div>
+
+          <!-- Facility 3 -->
+          <div class="donor-card">
+            <div class="donor-card-top">
+              <span class="donor-name">Jehangir Hospital</span>
+              <span class="donor-distance">📍 2.8 km</span>
+            </div>
+            <div class="text-muted text-sm">32 Sassoon Road, Opposite Railway Station, Pune 411001</div>
+            <div class="data-item-meta" style="margin-top: 6px;">
+              <span>🕒 24/7 Critical Care & Pharmacy</span>
+              <span class="badge badge-approved text-sm">Ambulance Hub</span>
+            </div>
+            <a href="tel:+912066811000" class="donor-phone-btn">
+              <span>📞</span>
+              <span>Call +91 20 6681 1000</span>
+            </a>
+          </div>
+
+          <!-- Facility 4 -->
+          <div class="donor-card">
+            <div class="donor-card-top">
+              <span class="donor-name">Poona Hospital & Research Centre</span>
+              <span class="donor-distance">📍 2.1 km</span>
+            </div>
+            <div class="text-muted text-sm">27 Sadashiv Peth, Near Alka Talkies, Pune 411030</div>
+            <div class="data-item-meta" style="margin-top: 6px;">
+              <span>🕒 General Medicine & Diagnostics</span>
+              <span class="badge badge-approved text-sm">Outpatient Clinic</span>
+            </div>
+            <a href="tel:+912024331707" class="donor-phone-btn">
+              <span>📞</span>
+              <span>Call +91 20 2433 1707</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p style="margin: 0;">&copy; 2026 RapidCare. Purely administrative & emergency coordination. Not a medical diagnostic service.</p>
+    </div>
+  </footer>
+
+  <!-- Floating Back To Top Button -->
+  <a href="#top" class="floating-back-to-top" title="Back to top" aria-label="Back to top">↑</a>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/patient.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RapidCare — Clinic Staff Registration</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-icon">✚</span>
+        <span>RapidCare</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="text-sm">Sign In</a></li>
+          <li><a href="register.html" class="btn btn-secondary btn-sm">Patient Sign Up</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Registration Form with Ambient Glow Lighting -->
+  <main class="ambient-glow-wrapper" style="flex: 1; padding: 12px 0 48px;">
+    <!-- Ambient Light Blobs -->
+    <div class="ambient-blob ambient-blob-teal" style="top: 20px; right: 10%; width: 480px; height: 480px;"></div>
+    <div class="ambient-blob ambient-blob-coral" style="bottom: 40px; left: 8%; width: 440px; height: 440px; opacity: 0.18;"></div>
+
+    <div class="container-narrow">
+      <div class="card animate-in">
+        <div style="text-align: center; margin-bottom: 20px;">
+        <span class="badge badge-pending" style="margin-bottom: 12px;">● Verification Required</span>
+        <h2>Clinic Staff Registration</h2>
+        <p class="text-muted text-sm">Join the RapidCare provider network to manage queues, appointments, and local emergency coordination.</p>
+      </div>
+
+      <!-- Prominent Verification Notice -->
+      <div class="alert alert-warning">
+        <div style="font-size: 1.25rem; line-height: 1;">ℹ️</div>
+        <div>
+          <strong>Administrative Approval Required</strong>
+          <div style="font-size: 0.85rem; margin-top: 4px; line-height: 1.5;">
+            To maintain medical community safety, all newly registered clinic accounts start in <strong>pending_verification</strong> status and cannot sign in until approved by our verification team.
+          </div>
+        </div>
+      </div>
+
+      <div id="clinic-error" class="alert alert-danger" style="display: none;"></div>
+      <div id="clinic-success" class="alert alert-success" style="display: none;"></div>
+
+      <form id="clinic-register-form">
+        <div class="form-group">
+          <label class="form-label" for="clinic-name">Clinic / Medical Center Name</label>
+          <input type="text" id="clinic-name" class="form-input" placeholder="e.g. Sunrise Community Clinic" required autocomplete="organization">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="clinic-email">Official Staff Email</label>
+          <input type="email" id="clinic-email" class="form-input" placeholder="admin@sunriseclinic.com" required autocomplete="email">
+          <div class="form-hint">Used for administrative communications and login once verified.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="clinic-phone">Clinic Contact Phone</label>
+          <input type="tel" id="clinic-phone" class="form-input" placeholder="+91 20 2555 0100" required autocomplete="tel">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="clinic-password">Create Password</label>
+          <input type="password" id="clinic-password" class="form-input" placeholder="At least 6 characters" minlength="6" required autocomplete="new-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Submit Clinic Registration</button>
+      </form>
+
+      <div class="text-muted text-sm" style="margin-top: 24px; text-align: center;">
+        Already approved? <a href="index.html" style="font-weight: 600;">Sign in to your dashboard</a>.
+      </div>
+    </div>
+  </div>
+</main>
+
+  <footer class="footer">
+    <div class="container">
+      <p style="margin: 0;">&copy; 2026 RapidCare Provider Network. Verification strictly enforced.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RapidCare — Clinic Operations Dashboard</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="top">
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-icon">✚</span>
+        <span>RapidCare</span>
+      </a>
+      <div class="dashboard-nav-user">
+        <div class="user-pill">
+          <span style="color: var(--color-success);">●</span>
+          <span id="clinic-display-name">Clinic Staff</span>
+          <span class="badge badge-confirmed text-sm">Provider Verified</span>
+        </div>
+        <button id="logout-btn" class="btn btn-secondary btn-sm">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content with Ambient Glow Lighting -->
+  <main class="ambient-glow-wrapper" style="flex: 1;">
+    <!-- Ambient Light Blobs -->
+    <div class="ambient-blob ambient-blob-teal" style="top: 20px; right: 2%; width: 540px; height: 540px;"></div>
+    <div class="ambient-blob ambient-blob-coral" style="top: 480px; left: -40px; width: 460px; height: 460px; opacity: 0.16;"></div>
+
+    <div class="container" style="padding-top: 24px; padding-bottom: 64px;">
+      
+      <div class="dashboard-header">
+        <div>
+          <span class="hero-tag">Clinic Coordination Center</span>
+          <h1 style="font-size: 2.2rem; margin-bottom: 4px;" id="clinic-heading">Clinic Management</h1>
+          <p class="text-muted text-sm">Review incoming patient appointments, coordinate emergency ambulance dispatches, and track blood requests.</p>
+        </div>
+        <div>
+          <button id="refresh-all-btn" class="btn btn-secondary btn-sm">↻ Refresh All Feeds</button>
+        </div>
+      </div>
+
+      <!-- Quick Jump Navigation Bar (Every Section in Clinic Portal) -->
+      <div class="quick-jump-wrapper animate-in">
+        <nav class="quick-jump-bar" aria-label="Clinic Portal Quick Section Navigation">
+          <span class="quick-jump-label">⚡ Quick Jump:</span>
+          <a href="#clinic-stats-section" class="quick-jump-link">📊 Operational Stats</a>
+          <a href="#clinic-emergency-overview-section" class="quick-jump-link highlight">🚨 Emergency Overview</a>
+          <a href="#clinic-appointments-section" class="quick-jump-link">📅 Patient Schedule</a>
+          <a href="#clinic-ambulance-section" class="quick-jump-link">🚑 SOS Ambulance Dispatches</a>
+          <a href="#clinic-blood-section" class="quick-jump-link">🩸 Blood Requirements</a>
+        </nav>
+      </div>
+
+      <!-- Alert Banner -->
+      <div id="clinic-alert" class="alert alert-info" style="display: none;"></div>
+
+      <!-- Overview Stat Cards (Top Row Analytics - Feature 2) -->
+      <section id="clinic-stats-section" class="stat-grid">
+        <!-- Stat 1: Total Appointments Today -->
+        <div class="card stat-card stat-teal">
+          <div class="stat-value" id="stat-appointments-today">0</div>
+          <div class="stat-label">Appointments Today</div>
+          <div class="stat-subtext">Scheduled for today</div>
+        </div>
+
+        <!-- Stat 2: Pending Appointments Count -->
+        <div class="card stat-card stat-warning">
+          <div class="stat-value" id="stat-appointments-pending">0</div>
+          <div class="stat-label">Pending Appointments</div>
+          <div class="stat-subtext">Awaiting confirmation</div>
+        </div>
+
+        <!-- Stat 3: Active Ambulance Requests Count -->
+        <div class="card stat-card stat-accent">
+          <div class="stat-value" id="stat-ambulance-active">0</div>
+          <div class="stat-label">Active Ambulances</div>
+          <div class="stat-subtext">Requested or dispatched</div>
+        </div>
+
+        <!-- Stat 4: Open Blood Requests Count -->
+        <div class="card stat-card stat-warning">
+          <div class="stat-value" id="stat-blood-open">0</div>
+          <div class="stat-label">Open Blood Requests</div>
+          <div class="stat-subtext">Unfulfilled urgent needs</div>
+        </div>
+
+        <!-- Stat 5: Total Registered Patients -->
+        <div class="card stat-card stat-success">
+          <div class="stat-value" id="stat-patients-total">0</div>
+          <div class="stat-label">Registered Patients</div>
+          <div class="stat-subtext">Total patient accounts</div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           UNIFIED EMERGENCY DASHBOARD: EMERGENCY OVERVIEW (Feature 1)
+           ====================================================================== -->
+      <section id="clinic-emergency-overview-section" class="dashboard-section">
+        <div class="card" style="border-top: 3px solid var(--color-accent);">
+          <div class="section-header" style="align-items: center;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="status-dot status-dot-urgent"></span>
+                <span class="hero-tag" style="margin: 0;">Unified Command Center</span>
+              </div>
+              <h2 style="margin: 6px 0 2px 0;">Emergency Overview</h2>
+              <p class="text-muted text-sm" style="margin: 0;">All active non-completed ambulance SOS dispatches and open blood requirements in one real-time view.</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <div class="unified-emergency-pill">
+                <span>🚨</span>
+                <span id="unified-emergency-total-stat">0 Active Emergencies</span>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="loadAllData()">↻ Refresh</button>
+              <a href="#top" class="back-to-top-btn">↑ Top</a>
+            </div>
+          </div>
+
+          <!-- Side-by-side Split View -->
+          <div class="emergency-split-grid">
+            <!-- Left Subcard: Active Ambulance SOS Dispatches -->
+            <div class="emergency-subcard">
+              <div class="emergency-subcard-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 1.25rem;">🚑</span>
+                  <strong>Active Ambulance Dispatches</strong>
+                </div>
+                <span id="unified-ambulance-count-badge" class="badge badge-urgent">0 Active</span>
+              </div>
+              <div id="unified-ambulance-list" class="data-list" style="margin-top: 8px;">
+                <div class="empty-state card-compact" style="padding: 16px;">
+                  <p class="text-muted text-sm" style="margin: 0;">Loading active dispatches...</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Subcard: Open Blood Requirements -->
+            <div class="emergency-subcard">
+              <div class="emergency-subcard-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 1.25rem;">🩸</span>
+                  <strong>Open Blood Requirements</strong>
+                </div>
+                <span id="unified-blood-count-badge" class="badge badge-pending">0 Open</span>
+              </div>
+              <div id="unified-blood-list" class="data-list" style="margin-top: 8px;">
+                <div class="empty-state card-compact" style="padding: 16px;">
+                  <p class="text-muted text-sm" style="margin: 0;">Loading open blood requests...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 1: APPOINTMENTS QUEUE & STATUS MANAGEMENT
+           ====================================================================== -->
+      <section id="clinic-appointments-section" class="dashboard-section">
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <h3>Patient Appointment Schedule</h3>
+              <p class="text-muted text-sm" style="margin: 0;">Update consultation statuses directly using the status dropdown.</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <input type="text" id="appointment-search" class="form-input" placeholder="🔍 Search patient name or email..." style="width: 260px; padding: 8px 14px; font-size: 0.88rem;">
+              <span id="appointments-badge-count" class="badge badge-requested">0 Total</span>
+              <a href="#top" class="back-to-top-btn">↑ Top</a>
+            </div>
+          </div>
+
+          <div id="clinic-appointments-list" class="data-list">
+            <div class="empty-state">
+              <div class="empty-state-icon">📅</div>
+              <p>No patient appointments found.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 2: EMERGENCY AMBULANCE COORDINATION
+           ====================================================================== -->
+      <section id="clinic-ambulance-section" class="dashboard-section">
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="badge badge-urgent">● SOS Dispatch Queue</span>
+              </div>
+              <h3 style="margin-top: 6px;">Emergency Ambulance Requests</h3>
+              <p class="text-muted text-sm" style="margin: 0;">Coordinate dispatches and update status (Requested ➔ Dispatched ➔ Arrived).</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="ambulance-badge-count" class="badge badge-urgent">0 Requests</span>
+              <a href="#top" class="back-to-top-btn">↑ Top</a>
+            </div>
+          </div>
+
+          <div id="clinic-ambulance-list" class="data-list">
+            <div class="empty-state">
+              <div class="empty-state-icon">🚑</div>
+              <p>No active ambulance requests.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 3: OPEN BLOOD REQUIREMENTS
+           ====================================================================== -->
+      <section id="clinic-blood-section" class="dashboard-section">
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <h3>Open Blood Requirements</h3>
+              <p class="text-muted text-sm" style="margin: 0;">Emergency requirements submitted by patients awaiting donor matches or fulfillment.</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="blood-badge-count" class="badge badge-pending">0 Open</span>
+              <a href="#top" class="back-to-top-btn">↑ Top</a>
+            </div>
+          </div>
+
+          <div id="clinic-blood-list" class="data-list">
+            <div class="empty-state">
+              <div class="empty-state-icon">🩸</div>
+              <p>No open blood requirements found.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p style="margin: 0;">&copy; 2026 RapidCare Clinic Portal. Strictly administrative and emergency response coordination.</p>
+    </div>
+  </footer>
+
+  <!-- Floating Back To Top Button -->
+  <a href="#top" class="floating-back-to-top" title="Back to top" aria-label="Back to top">↑</a>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/clinic.js"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RapidCare — Calm, Modern Clinic & Emergency Coordination</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-icon">✚</span>
+        <span>RapidCare</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="register.html" class="text-sm">Patient Sign Up</a></li>
+          <li><a href="register-clinic.html" class="btn btn-secondary btn-sm">Clinic Portal</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section with Ambient Background Lighting -->
+  <main class="hero ambient-glow-wrapper">
+    <!-- Ambient Light Sources (Soft, deeply blurred radial glows) -->
+    <div class="ambient-blob ambient-blob-teal" style="top: -40px; right: 2%; width: 540px; height: 540px;"></div>
+    <div class="ambient-blob ambient-blob-coral" style="bottom: -60px; left: -40px; width: 460px; height: 460px; opacity: 0.18;"></div>
+
+    <div class="container">
+      <div class="hero-grid">
+        
+        <!-- Left: Calm Introduction -->
+        <div class="hero-content animate-in">
+          <div class="hero-tag">
+            <span class="status-dot"></span> Connected Community Healthcare
+          </div>
+          <h1>Healthcare coordination designed for clarity and peace of mind.</h1>
+          <p class="hero-lead">
+            RapidCare empowers local clinics to manage patient appointments digitally, while giving individuals immediate access to emergency ambulance dispatch and intelligent blood donor matching.
+          </p>
+
+          <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 28px;">
+            <a href="register.html" class="btn btn-primary">Join as Patient</a>
+            <a href="register-clinic.html" class="btn btn-secondary">Register Your Clinic</a>
+          </div>
+
+          <div class="hero-trust-list">
+            <div><span class="check-icon">✓</span> Pre-screened network</div>
+            <div><span class="check-icon">✓</span> Real-time coordination</div>
+            <div><span class="check-icon">✓</span> Zero diagnosis bias</div>
+          </div>
+        </div>
+
+        <!-- Right: Sign In Card -->
+        <div class="hero-card-col animate-in delay-1">
+          <div class="card">
+            <h2 style="font-size: 1.55rem; margin-bottom: 6px;">Welcome Back</h2>
+            <p class="text-muted text-sm" style="margin-bottom: 22px;">Sign in to your patient or clinic staff dashboard</p>
+
+            <div id="login-error" class="alert alert-danger" style="display: none;"></div>
+
+            <form id="login-form">
+              <div class="form-group">
+                <label class="form-label" for="login-email">Email Address</label>
+                <input type="email" id="login-email" class="form-input" placeholder="name@example.com" required autocomplete="email">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="login-password">Password</label>
+                <input type="password" id="login-password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            </form>
+
+            <!-- 1-Click Demo Fillers with iOS-style Segmented Toggle -->
+            <div class="demo-box">
+              <span class="demo-label">Hackathon Demo Fill:</span>
+              <div class="segmented-control" id="demo-toggle" data-selected="">
+                <div class="segmented-glider"></div>
+                <button type="button" class="segmented-option" id="demo-opt-clinic" onclick="selectDemoToggle('clinic')">Clinic</button>
+                <button type="button" class="segmented-option" id="demo-opt-patient" onclick="selectDemoToggle('patient')">Patient</button>
+                <button type="button" class="segmented-option" id="demo-opt-admin" onclick="selectDemoToggle('admin')">Super Admin</button>
+              </div>
+            </div>
+
+            <div class="text-muted text-sm" style="margin-top: 22px; text-align: center;">
+              Don't have an account? 
+              <a href="register.html" style="font-weight: 600;">Sign up as a patient</a> or 
+              <a href="register-clinic.html" style="font-weight: 600;">register a clinic</a>.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- 3-Feature Highlights Section with Subtle Ambient Background Light -->
+  <section id="features" class="features-section ambient-glow-wrapper">
+    <div class="ambient-blob ambient-blob-teal" style="top: 20%; left: 40%; width: 600px; height: 400px; opacity: 0.14;"></div>
+
+    <div class="container">
+      <div style="text-align: center; max-width: 620px; margin: 0 auto;">
+        <h2>Built for care, speed, and trust</h2>
+        <p class="text-muted">Simple administrative workflows that save valuable time when every minute matters.</p>
+      </div>
+
+      <div class="features-grid">
+        
+        <!-- Feature 1 -->
+        <div class="feature-card animate-in delay-1">
+          <div class="feature-icon-box">📅</div>
+          <h3>Digital Appointments</h3>
+          <p class="text-muted text-sm">
+            Schedule clinic consultations smoothly with clear visibility into your request status, confirmed slots, and real-time updates.
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card animate-in delay-2">
+          <div class="feature-icon-box">🚑</div>
+          <h3>Ambulance Coordination</h3>
+          <p class="text-muted text-sm">
+            Emergency SOS dispatch requests with real-time GPS coordinate awareness to connect patients to available ambulances swiftly.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card animate-in delay-3">
+          <div class="feature-icon-box">🩸</div>
+          <h3>Smart Blood Matching</h3>
+          <p class="text-muted text-sm">
+            Medical compatibility matrix matching and Haversine distance proximity ranking to locate nearby compatible donors immediately.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p style="margin: 0;">&copy; 2026 RapidCare. Purely administrative and emergency coordination. Not a medical diagnostic service.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
